@@ -1,4 +1,18 @@
-﻿@page
-@model portfolio.Views.Projects.EditModel
+﻿@model Project
 @{
+    ViewData["Title"] = "Edit a project";
+    ViewData["FormAction"] = "Edit";
+}
+
+<div class="head-row">
+    <div>
+        <h1 class="page-title">Edit a project</h1>
+        <p class="hint">Change anything, then save.</p>
+    </div>
+</div>
+
+<partial name="_Form" model="Model" />
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
 }

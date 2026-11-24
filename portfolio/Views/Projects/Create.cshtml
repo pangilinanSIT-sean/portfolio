@@ -1,4 +1,18 @@
-﻿@page
-@model portfolio.Views.Projects.CreateModel
+﻿@model Project
 @{
+    ViewData["Title"] = "Add a project";
+    ViewData["FormAction"] = "Create";
+}
+
+<div class="head-row">
+    <div>
+        <h1 class="page-title">Add a project</h1>
+        <p class="hint">Pictures and video are public links, not files.</p>
+    </div>
+</div>
+
+<partial name="_Form" model="Model" />
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
 }

@@ -1,4 +1,41 @@
-﻿@page
-@model portfolio.Views.Courses.IndexModel
+﻿@model List<Course>
 @{
+    ViewData["Title"] = "Courses";
 }
+
+<div class="head-row">
+    <div>
+        <h1 class="page-title">Courses</h1>
+        <p class="hint">@Model.Count courses</p>
+    </div>
+    <a asp-action="Create" class="btn btn-accent">Add a course</a>
+</div>
+
+<div class="tablewrap">
+    <table class="table table-hover align-middle mb-0">
+        <thead>
+            <tr>
+                <th>Code</th>
+                <th>Title</th>
+                <th>Term</th>
+                <th class="text-end">Projects</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var course in Model)
+            {
+                <tr>
+                    <td><span class="codebadge" style="--h:@course.Hue">@course.Code</span></td>
+                    <td>@course.Title</td>
+                    <td class="soft">@(course.Term ?? "—")</td>
+                    <td class="text-end">@course.ProjectCount</td>
+                    <td class="actions">
+                        <a asp-action="Edit" asp-route-id="@course.CourseId">Edit</a>
+                        <a asp-action="Delete" asp-route-id="@course.CourseId" class="danger">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

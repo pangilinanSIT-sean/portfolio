@@ -1,4 +1,42 @@
-﻿@page
-@model portfolio.Views.Projects.IndexModel
+﻿@model List<Project>
 @{
+    ViewData["Title"] = "Projects";
 }
+
+<div class="head-row">
+    <div>
+        <h1 class="page-title">Projects</h1>
+        <p class="hint">@Model.Count projects</p>
+    </div>
+    <a asp-action="Create" class="btn btn-accent">Add a project</a>
+</div>
+
+<div class="tablewrap">
+    <table class="table table-hover align-middle mb-0">
+        <thead>
+            <tr>
+                <th>Course</th>
+                <th>Title</th>
+                <th>Year</th>
+                <th class="text-end">Pictures</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var project in Model)
+            {
+                <tr>
+                    <td><span class="codebadge" style="--h:@project.Hue">@project.CourseCode</span></td>
+                    <td>@project.Title</td>
+                    <td class="soft">@project.YearMade</td>
+                    <td class="text-end">@project.ImageCount</td>
+                    <td class="actions">
+                        <a asp-controller="Home" asp-action="Project" asp-route-id="@project.ProjectId">View</a>
+                        <a asp-action="Edit" asp-route-id="@project.ProjectId">Edit</a>
+                        <a asp-action="Delete" asp-route-id="@project.ProjectId" class="danger">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

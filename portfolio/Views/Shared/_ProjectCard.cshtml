@@ -1,0 +1,19 @@
+﻿@model Project
+
+<a asp-controller="Home" asp-action="Project" asp-route-id="@Model.ProjectId" class="project-card" style="--h:@Model.Hue">
+    <div class="project-cover">
+        @if (!string.IsNullOrEmpty(Model.CoverUrl))
+        {
+            <img src="@Model.CoverUrl" alt="@Model.Title" loading="lazy" />
+        }
+        else
+        {
+            <span class="project-mono">@Model.CourseCode</span>
+        }
+    </div>
+    <div class="project-body">
+        <h3 class="project-title">@Model.Title</h3>
+        <p class="project-summary">@Model.Summary</p>
+        <span class="project-year">@Model.YearMade</span>
+    </div>
+</a>

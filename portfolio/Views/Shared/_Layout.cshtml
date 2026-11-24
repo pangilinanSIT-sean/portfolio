@@ -1,50 +1,63 @@
-﻿<!DOCTYPE html>
-<html lang="en">
+﻿@{
+    // The editor side is the Courses and Projects controllers. Everything else is the viewer side.
+    var controller = ViewContext.RouteData.Values["controller"]?.ToString();
+    var inEditor = controller == "Courses" || controller == "Projects";
+    var owner = "Sean";
+}
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - portfolio</title>
-    <script type="importmap"></script>
+    <title>@ViewData["Title"] | @owner's Portfolio</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/portfolio.styles.css" asp-append-version="true" />
 </head>
-<body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">portfolio</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
+<body class="@(inEditor ? "mode-editor" : "mode-viewer")">
+    <header class="bar">
+        <div class="container bar-inner">
+            <a class="logo" asp-controller="Home" asp-action="Index">@owner<span>.</span></a>
+
+            @if (!inEditor)
+            {
+                <form asp-controller="Home" asp-action="Index" method="get" class="bar-search">
+                    <input name="q" class="form-control form-control-sm" placeholder="Search projects" aria-label="Search projects" />
+                </form>
+            }
+
+            <nav class="bar-nav">
+                @if (inEditor)
+                {
+                    <span class="mode-badge">Editing</span>
+                    <a asp-controller="Courses" asp-action="Index">Courses</a>
+                    <a asp-controller="Projects" asp-action="Index">Projects</a>
+                    <a asp-controller="Home" asp-action="Index" class="switch">View site</a>
+                    <form asp-controller="Account" asp-action="Logout" method="post" class="d-inline">
+                        <button type="submit" class="linkbutton">Sign out</button>
+                    </form>
+                }
+                else
+                {
+                    <a asp-controller="Home" asp-action="Index">Home</a>
+                    <a asp-controller="Courses" asp-action="Index" class="switch">Editor</a>
+                }
+            </nav>
+        </div>
     </header>
+
     <div class="container">
-        <main role="main" class="pb-3">
+        <main role="main" class="page">
             @RenderBody()
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2026 - portfolio - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-        </div>
+    <footer class="foot">
+        <div class="container">&copy; 2026 @owner. Built with ASP.NET Core MVC and PostgreSQL on Supabase.</div>
     </footer>
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/js/portfolio.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

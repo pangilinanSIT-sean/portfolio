@@ -1,4 +1,31 @@
-﻿@page
-@model portfolio.Views.Projects.DeleteModel
+﻿@model Project
 @{
+    ViewData["Title"] = "Delete a project";
 }
+
+<div class="head-row">
+    <div>
+        <h1 class="page-title">Delete a project</h1>
+        <p class="hint">This cannot be undone.</p>
+    </div>
+</div>
+
+<div class="panel panel-danger">
+    <p>Are you sure you want to delete this project?</p>
+    <dl class="facts">
+        <dt>Course</dt>
+        <dd>@Model.CourseCode</dd>
+        <dt>Title</dt>
+        <dd>@Model.Title</dd>
+        <dt>Year</dt>
+        <dd>@Model.YearMade</dd>
+        <dt>Pictures</dt>
+        <dd>@Model.ImageCount</dd>
+    </dl>
+    <p class="hint">Its pictures are deleted with it.</p>
+
+    <form asp-action="Delete" asp-route-id="@Model.ProjectId" method="post">
+        <button type="submit" class="btn btn-danger">Delete</button>
+        <a asp-action="Index" class="btn btn-quiet">Cancel</a>
+    </form>
+</div>

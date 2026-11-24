@@ -1,0 +1,76 @@
+﻿@model Project
+@{
+    // "Create" or "Edit": the page that includes this form says which.
+    var action = ViewData["FormAction"]?.ToString() ?? "Create";
+}
+
+<form asp-action="@action" method="post" class="panel panel-wide" data-image-lines>
+    <div asp-validation-summary="ModelOnly"></div>
+    @if (action == "Edit")
+    {
+        <input type="hidden" asp-for="ProjectId" />
+    }
+
+    <div class="row g-3 mb-3">
+        <div class="col-md-8">
+            <label asp-for="CourseId" class="form-label">Course</label>
+            <select asp-for="CourseId" asp-items="ViewBag.Courses" class="form-select">
+                <option value="">(choose a course)</option>
+            </select>
+            <span asp-validation-for="CourseId" class="text-danger"></span>
+        </div>
+        <div class="col-md-4">
+            <label asp-for="YearMade" class="form-label">Year</label>
+            <input asp-for="YearMade" class="form-control" />
+            <span asp-validation-for="YearMade" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Title" class="form-label"></label>
+        <input asp-for="Title" class="form-control" />
+        <span asp-validation-for="Title" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Summary" class="form-label"></label>
+        <input asp-for="Summary" class="form-control" />
+        <span asp-validation-for="Summary" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Details" class="form-label"></label>
+        <textarea asp-for="Details" class="form-control" rows="5"></textarea>
+        <span asp-validation-for="Details" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Tools" class="form-label">Tools (separated by commas)</label>
+        <input asp-for="Tools" class="form-control" />
+        <span asp-validation-for="Tools" class="text-danger"></span>
+    </div>
+
+    <div class="row g-3 mb-3">
+        <div class="col-md-6">
+            <label asp-for="VideoUrl" class="form-label">YouTube link</label>
+            <input asp-for="VideoUrl" class="form-control" placeholder="https://youtu.be/..." />
+            <span asp-validation-for="VideoUrl" class="text-danger"></span>
+        </div>
+        <div class="col-md-6">
+            <label asp-for="RepoUrl" class="form-label">GitHub link</label>
+            <input asp-for="RepoUrl" class="form-control" placeholder="https://github.com/..." />
+            <span asp-validation-for="RepoUrl" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="mb-4">
+        <label asp-for="ImageUrlsText" class="form-label">Picture addresses (one per line)</label>
+        <textarea asp-for="ImageUrlsText" class="form-control" rows="5" data-image-lines-box placeholder="https://.../screen1.png"></textarea>
+        <span asp-validation-for="ImageUrlsText" class="text-danger"></span>
+        <span class="text-danger" data-image-lines-msg></span>
+        <div class="hint mt-1">The project and its pictures are saved together. If one picture is refused, nothing is saved.</div>
+    </div>
+
+    <button type="submit" class="btn btn-accent">Save</button>
+    <a asp-action="Index" class="btn btn-quiet">Cancel</a>
+</form>

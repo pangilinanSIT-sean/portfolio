@@ -1,0 +1,28 @@
+﻿@model LoginForm
+@{
+    ViewData["Title"] = "Sign in";
+}
+
+<div class="head-row">
+    <div>
+        <h1 class="page-title">Sign in</h1>
+        <p class="hint">The editor side is for the owner of the portfolio.</p>
+    </div>
+</div>
+
+<form asp-action="Login" asp-route-returnUrl="@ViewData["ReturnUrl"]" method="post" class="panel">
+    <div asp-validation-summary="ModelOnly"></div>
+
+    <div class="mb-4">
+        <label asp-for="Password" class="form-label">Editor password</label>
+        <input asp-for="Password" class="form-control" autocomplete="current-password" />
+        <span asp-validation-for="Password" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-accent">Sign in</button>
+    <a asp-controller="Home" asp-action="Index" class="btn btn-quiet">Back to the portfolio</a>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

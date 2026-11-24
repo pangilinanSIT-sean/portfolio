@@ -1,0 +1,65 @@
+﻿@model ProjectPage
+@{
+    var project = Model.Project;
+    ViewData["Title"] = project.Title;
+
+    // Turn a YouTube link into the address of an embeddable player.
+    var videoId = System.Text.RegularExpressions.Regex.Match(project.VideoUrl ?? "", @"(?:v=|youtu\.be/|shorts/)([A-Za-z0-9_-]{11})").Groups[1].Value;
+}
+
+<a asp-controller="Home" asp-action="Index" class="back">&larr; All courses</a>
+
+<header class="course-head" style="--h:@project.Hue">
+    <span class="codebadge">@project.CourseCode : @project.CourseTitle</span>
+    <h1>@project.Title</h1>
+    <p class="intro-lead">@project.Summary</p>
+    <div class="chips">
+        <span class="chip">@project.YearMade</span>
+        @foreach (var tool in (project.Tools ?? "").Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries))
+        {
+            <span class="chip">@tool</span>
+        }
+    </div>
+</header>
+
+@if (!string.IsNullOrWhiteSpace(project.Details))
+{
+    <section class="prose">
+        @foreach (var paragraph in project.Details.Split('\n', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries))
+        {
+            <p>@paragraph</p>
+        }
+    </section>
+}
+
+@if (videoId != "")
+{
+    <h2 class="block-title">Video</h2>
+    <div class="video">
+        <iframe width="560" height="315" src="https://www.youtube.com/embed/@videoId" title="Project demo" allowfullscreen></iframe>
+    </div>
+}
+
+@if (Model.Images.Count > 0)
+{
+    <h2 class="block-title">Screens</h2>
+    <div class="gallery">
+        @foreach (var image in Model.Images)
+        {
+            <figure class="shot">
+                <a href="@image.ImageUrl" target="_blank" rel="noopener">
+                    <img src="@image.ImageUrl" alt="@(image.Caption ?? project.Title)" loading="lazy" />
+                </a>
+                @if (!string.IsNullOrEmpty(image.Caption))
+                {
+                    <figcaption>@image.Caption</figcaption>
+                }
+            </figure>
+        }
+    </div>
+}
+
+@if (!string.IsNullOrEmpty(project.RepoUrl))
+{
+    <p class="mt-4"><a href="@project.RepoUrl" class="btn btn-ghost" target="_blank" rel="noopener">View the code on GitHub</a></p>
+}

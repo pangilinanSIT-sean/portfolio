@@ -1,4 +1,47 @@
-﻿@page
-@model portfolio.Views.Courses.EditModel
+﻿@model Course
 @{
+    ViewData["Title"] = "Edit a course";
+}
+
+<div class="head-row">
+    <div>
+        <h1 class="page-title">Edit a course</h1>
+        <p class="hint">Change anything, then save.</p>
+    </div>
+</div>
+
+<form asp-action="Edit" method="post" class="panel">
+    <div asp-validation-summary="ModelOnly"></div>
+    <input type="hidden" asp-for="CourseId" />
+
+    <div class="mb-3">
+        <label asp-for="Code" class="form-label"></label>
+        <input asp-for="Code" class="form-control" />
+        <span asp-validation-for="Code" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Title" class="form-label"></label>
+        <input asp-for="Title" class="form-control" />
+        <span asp-validation-for="Title" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Term" class="form-label"></label>
+        <input asp-for="Term" class="form-control" />
+        <span asp-validation-for="Term" class="text-danger"></span>
+    </div>
+
+    <div class="mb-4">
+        <label asp-for="Description" class="form-label"></label>
+        <textarea asp-for="Description" class="form-control" rows="4"></textarea>
+        <span asp-validation-for="Description" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-accent">Save</button>
+    <a asp-action="Index" class="btn btn-quiet">Cancel</a>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
 }

@@ -1,25 +1,62 @@
 using Microsoft.AspNetCore.Mvc;
+using portfolio.Data;
 using portfolio.Models;
-using System.Diagnostics;
 
-namespace portfolio.Controllers
+namespace portfolio.Controllers;
+
+// The viewer side: what a visitor sees. Read-only.
+public class HomeController : Controller
 {
-    public class HomeController : Controller
+    private readonly CourseRepository _courses;
+    private readonly ProjectRepository _projects;
+    private readonly ProjectImageRepository _images;
+
+    public HomeController(CourseRepository courses, ProjectRepository projects, ProjectImageRepository images)
     {
-        public IActionResult Index()
+        _courses = courses;
+        _projects = projects;
+        _images = images;
+    }
+
+    // GET / : every course with its projects. With ?q=word only the matching projects are shown.
+    public async Task<IActionResult> Index(string? q)
+    {
+        var query = (q ?? "").Trim();
+        var page = new HomePage
         {
-            return View();
+            Query = query,
+            Courses = await _courses.GetAllAsync(),
+            Projects = query.Length == 0 ? await _projects.GetAllAsync() : await _projects.SearchAsync(query)
+        };
+        return View(page);
+    }
+
+    // GET /Home/Project/5 : one project with its pictures and its video.
+    public async Task<IActionResult> Project(long id)
+    {
+        var project = await _projects.GetByIdAsync(id);
+        if (project == null)
+        {
+            return NotFound();                          // a 404 for an id that does not exist
         }
 
-        public IActionResult Privacy()
+        var page = new ProjectPage
         {
-            return View();
-        }
+            Project = project,
+            Images = await _images.GetByProjectAsync(id)
+        };
+        return View(page);
+    }
 
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        }
+    // The friendly page for anything unexpected (Program.cs sends exceptions here).
+    public IActionResult Error()
+    {
+        return View();
+    }
+
+    // A status code such as 404 (Program.cs sends them here).
+    public IActionResult Status(int code)
+    {
+        return code == 404 ? View("NotFound") : View("Error");
     }
 }
