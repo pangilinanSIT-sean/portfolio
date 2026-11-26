@@ -2,15 +2,16 @@
     // The editor side is the Courses and Projects controllers. Everything else is the viewer side.
     var controller = ViewContext.RouteData.Values["controller"]?.ToString();
     var inEditor = controller == "Courses" || controller == "Projects";
-    var owner = "Sean";
+    var owner = "My Portfolio";
 }
 <!DOCTYPE html>
 <html lang="en" data-bs-theme="dark">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] | @owner's Portfolio</title>
+    <title>@ViewData["Title"] | @owner</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
 </head>
 <body class="@(inEditor ? "mode-editor" : "mode-viewer")">
