@@ -51,7 +51,41 @@
             @RenderBody()
         </main>
     </div>
+    <div class="arcade-lane" aria-hidden="true">
+        <div class="dots"></div>
+        <div class="eaten"></div>
+        <div class="bug b3"></div>
+        <div class="bug b2"></div>
+        <div class="bug b1"></div>
+        <div class="chomper"></div>
+    </div>
 
+    <div class="stage" id="stage">
+        <div class="score" id="score">SCORE 0000</div>
+        <div class="crate">?</div>
+        <div class="coin"></div>
+        <button type="button" class="hero" id="hero" title="Click me" aria-label="Make the robot jump"><span class="sprite"></span></button>
+    </div>
+
+    <script>
+            (function() {
+                var stage = document.getElementById('stage');
+                var hero = document.getElementById('hero');
+                var scoreBox = document.getElementById('score');
+                var score = 0;
+
+                hero.addEventListener('click', function() {
+                    stage.classList.remove('go');
+                    void stage.offsetWidth;              // restart the animation on every click
+                    stage.classList.add('go');
+
+                    setTimeout(function() {             // the robot reaches the crate a moment later
+                        score += 100;
+                        scoreBox.textContent = 'SCORE ' + String(score).padStart(4, '0');
+                    }, 280);
+                });
+            })();
+    </script>
     <footer class="foot">
         <div class="container">&copy; 2026 @owner. Built with ASP.NET Core MVC and PostgreSQL on Supabase.</div>
     </footer>
